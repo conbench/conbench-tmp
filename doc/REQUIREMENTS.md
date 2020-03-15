@@ -40,15 +40,16 @@ things that this project is **not** going to do, at least at this stage.
 
 Some areas of development for this framework include the following areas:
 
-* Result storage
+* Result database
 * Benchmark result collection
 * Hardware information collection
 * Software configuration collection
-* Build automation
+* Build Configuration and Automation
 * Tooling for patch validation
+* API for remote reporting
 * Front end for exploration and visualization
 
-### Result storage
+### Result database
 
 This project requires a database to store and query the data produced by
 executing benchmarks. Some considerations for the database:
@@ -71,23 +72,73 @@ different axes of comparison:
 * Dependencies versions (e.g. OpenBLAS vs. Intel MKL)
 * Machine / hardware configuration (e.g. CPU type or architecture)
 
+Note that results collected from different machines may be stored in the same
+database.
+
 ### Benchmark result collection
 
 We assume that developers will continue to author benchmarks using the
 preferred microbenchmark or macrobenchmark support libraries for their
 programming language.
 
-Given an in-use benchmark support library
+For each kind of benchmarking library, we propose to write a "plugin" to enable
+this project to
+
+* Execute the benchmarks
+* Extract and store the results
+
+Some things to keep in mind:
+
+* Not all benchmarks are time-based. Other metrics include throughput
+  (e.g. bytes-per-second) or memory use. We should probably retain the
+  flexibility to track new kinds of metrics in the future.
+* A single benchmark run may produce more than one kind of result measurement,
+  such as both time and peak memory use.
+* For each kind of measurement, we should know whether "higher" or "lower" is
+  better.
+
+One question to be explored is benchmarks that output results from multiple
+runs rather than an average or median result. The benchmark may return all of
+the results and leave the statistics to us. We should probably have the
+flexibility to store many results for the same metric on the same benchmark run
+so that we can compute statistics like mean, median, and standard deviation
+ourselves.
 
 ### Hardware information collection
 
+When executing the benchmarks on a machine, we should collect as detailed
+information as possible about the machine and store this in a well-structured
+schema:
+
+* CPU identifier and characteristics (manufacturer, architecture, clock speed,
+  L1/L2/L3 cache sizes, and so forth)
+* Installed RAM
+* GPU information (including multi-GPU configurations)
+
 ### Software configuration collection
 
-### Build Automation
+A benchmark run may expose dependency version numbers and other configuration
+information. This includes such things as:
 
-### Front end for exploration and visualization
+* The operating system type and version (this includes the Linux kernel
+  version). This is important as operating system updates in recent times have
+  included CPU security vulnerability mitigations that affect performance.
+* Compiler type and version. For example, a machine may report both gcc 4.8 and
+  gcc 8 results
+* Installed dependency versions (both build-time and run-time dependencies)
+
+Some of this data collection will have to be provided by common code (for
+example, operating system level data) while other data will be provided by
+programming language-specific plugins (e.g. reporting installed Python packages
+or C++ library toolchain dependencies)
+
+### Build Configuration and Automation
 
 ### Tooling for patch validation
+
+### API for remote reporting
+
+### Front end for exploration and visualization
 
 ## Implementation Considerations
 

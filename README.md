@@ -15,7 +15,14 @@ ready for use. See [doc/REQUIREMENTS.md][1] for more.
 
 * [Airspeed Velocity (Python-specific)][2]
 * [vbench (Python-specific)][3]
+* [Codespeed][4]
+
+## References
+
+* [(2011) "Introducing vbench, new code performance analysis and monitoring tool"][5]
 
 [1]: https://github.com/apache/arrow/blob/master/doc/REQUIREMENTS.md
 [2]: https://github.com/airspeed-velocity/asv
 [3]: https://github.com/wesm/vbench
+[4]: https://github.com/tobami/codespeed
+[5]: https://wesmckinney.com/blog/introducing-vbench-new-code-performance-analysis-and-monitoring-tool/
