@@ -64,7 +64,7 @@ executing benchmarks. Some considerations for the database:
   extensions).
 * Data may be commingled from different underlying benchmark frameworks
 
-Users of the CB framework may wish to examine benchmark results across many
+Users of Conbench may wish to examine benchmark results across many
 different axes of comparison:
 
 * Revisions of the codebase (changes through time)
@@ -134,14 +134,60 @@ or C++ library toolchain dependencies)
 
 ### Build Configuration and Automation
 
+Conbench users must do an initial setup / configuration to instruct Conbench
+how to do a number of things:
+
+* The type of code repository and its location. Conbench should probably drive
+  the codebase clone and checkout process to avoid user errors and enhance
+  reproducibility
+* The parameters for each benchmark run to be performed for a revision of the
+  codebase. Such parameters may include: environment variables
+  (e.g. `CXX=clang-9`), build system configuration options, compiler flags,
+  library dependency versions, and other details.
+* The template script to invoke to build the project and any benchmark
+  executables given a set of configuration parameters
+
+Some kind of human-readable YAML-based configuration is likely called
+for. Templatized build scripts could use Jinja2 syntax or some other well-known
+template syntax for parameters that vary across different benchmark runs.
+
 ### Tooling for patch validation
+
+It would be useful to have an easy-to-use command line tool to assist
+developers with comparing the performance of a set of benchmarks between two
+commits, such as the master branch versus a feature branch. Such feedback could
+be created by automated processes to give feedback on GitHub pull requests to
+validate that a patch does not cause performance regressions.
 
 ### API for remote reporting
 
+Some users may wish to store benchmark results locally, whereas others may wish
+to report results from "satellite" machines into a central result server. It
+would make sense, therefore, to have a simple REST-type API server
+implementation that is able to receive results and write them to its local
+database.
+
+Another possibility for an API for remote reporting is to write results to a
+remote SQL server (e.g. PostgreSQL). This will be to determined.
+
 ### Front end for exploration and visualization
 
+Given a result database, users will wish to explore and visualize the results
+in some kind of UI, probably in a web browser. A static site would be the
+simplest to deploy.
+
+For example, the [Airspeed Velocity project][5] for continuous benchmarking in
+Python is able to [generate a static site for browsing results][4] and may
+provide some inspiration.
+
 ## Implementation Considerations
+
+Python seems like the probable primary implementation language of
+Conbench. There are a variety of other technical decisions to be made based on
+the above and we can accumulate these here.
 
 [1]: https://github.com/google/benchmark
 [2]: https://openjdk.java.net/projects/code-tools/jmh/
 [3]: https://docs.rs/crate/criterion
+[4]: https://pv.github.io/numpy-bench/
+[5]: https://github.com/airspeed-velocity/asv
