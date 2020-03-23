@@ -94,15 +94,14 @@ Some things to keep in mind:
   flexibility to track new kinds of metrics in the future.
 * A single benchmark run may produce more than one kind of result measurement,
   such as both time and peak memory use.
+* A benchmark may emit multiple results from a single run rather than the
+  average or median results. This is important to measure variability across
+  runs as well as differences between the first execution and subsequent
+  executions (e.g. caching or other effects). Thus we should be able to store
+  multiple measurements for the same metric as the output of a single benchmark
+  run.
 * For each kind of measurement, we should know whether "higher" or "lower" is
   better.
-
-One question to be explored is benchmarks that output results from multiple
-runs rather than an average or median result. The benchmark may return all of
-the results and leave the statistics to us. We should probably have the
-flexibility to store many results for the same metric on the same benchmark run
-so that we can compute statistics like mean, median, and standard deviation
-ourselves.
 
 ### Hardware information collection
 
@@ -153,11 +152,15 @@ template syntax for parameters that vary across different benchmark runs.
 
 ### Tooling for patch validation
 
-It would be useful to have an easy-to-use command line tool to assist
-developers with comparing the performance of a set of benchmarks between two
-commits, such as the master branch versus a feature branch. Such feedback could
-be created by automated processes to give feedback on GitHub pull requests to
-validate that a patch does not cause performance regressions.
+It would be useful to have an easy-to-use command line interface (CLI) tool to
+assist developers with comparing the performance of a set of benchmarks between
+two commits, such as the master branch versus a feature branch. Such feedback
+could be created by automated processes to give feedback on GitHub pull
+requests to validate that a patch does not cause performance regressions.
+
+As special cases, this CLI tool should also support comparing local changes
+versus a branch (e.g. master), or checking the performance after one or more
+branches are merged with master.
 
 ### API for remote reporting
 

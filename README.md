@@ -16,6 +16,7 @@ ready for use. See [doc/REQUIREMENTS.md][1] for more.
 * [Airspeed Velocity (Python-specific)][2]
 * [vbench (Python-specific)][3]
 * [Codespeed][4]
+* [h2oai/db-benchmark][6]
 
 ## References
 
@@ -26,3 +27,4 @@ ready for use. See [doc/REQUIREMENTS.md][1] for more.
 [3]: https://github.com/wesm/vbench
 [4]: https://github.com/tobami/codespeed
 [5]: https://wesmckinney.com/blog/introducing-vbench-new-code-performance-analysis-and-monitoring-tool/
+[6]: https://github.com/h2oai/db-benchmark
